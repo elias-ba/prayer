@@ -1,722 +1,793 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Programmer's Prayer</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=VT323&family=Anonymous+Pro&family=Major+Mono+Display&display=swap');
-        
-        :root {
-            --primary-color: #6366f1;
-            --secondary-color: #4f46e5;
-            --accent-color: #8b5cf6;
-            --text-color: #1f2937;
-            --light-text: #6b7280;
-            --background: #0f172a;
-            --card-bg: #1e293b;
-            --code-bg: #334155;
-            --code-color: #38bdf8;
-            --terminal-green: #4ade80;
+      @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600&family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=VT323&family=Anonymous+Pro&family=Major+Mono+Display&display=swap");
+
+      :root {
+        --primary-color: #6366f1;
+        --secondary-color: #4f46e5;
+        --accent-color: #8b5cf6;
+        --text-color: #1f2937;
+        --light-text: #6b7280;
+        --background: #0f172a;
+        --card-bg: #1e293b;
+        --code-bg: #334155;
+        --code-color: #38bdf8;
+        --terminal-green: #4ade80;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: var(--background);
+        color: #e2e8f0;
+        font-family: "Space Mono", monospace;
+        line-height: 1.7;
+        position: relative;
+        min-height: 100vh;
+      }
+
+      .background-grid {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: 50px 50px;
+        background-image: linear-gradient(
+            to right,
+            rgba(99, 102, 241, 0.05) 1px,
+            transparent 1px
+          ),
+          linear-gradient(
+            to bottom,
+            rgba(99, 102, 241, 0.05) 1px,
+            transparent 1px
+          );
+        z-index: -1;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      header {
+        text-align: center;
+        padding: 3rem 1rem;
+        position: relative;
+      }
+
+      header::before {
+        content: "<header>";
+        position: absolute;
+        top: 10px;
+        left: 0;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.8rem;
+        color: rgba(148, 163, 184, 0.6);
+      }
+
+      header::after {
+        content: "</header>";
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.8rem;
+        color: rgba(148, 163, 184, 0.6);
+      }
+
+      h1 {
+        font-family: "Major Mono Display", monospace;
+        font-size: 2.8rem;
+        margin-bottom: 1rem;
+        color: var(--terminal-green);
+        letter-spacing: -2px;
+        text-shadow: 0 0 10px rgba(74, 222, 128, 0.4);
+      }
+
+      .subtitle {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 1rem;
+        color: #94a3b8;
+        margin-bottom: 2rem;
+        font-weight: 300;
+      }
+
+      .subtitle::before {
+        content: "/* ";
+      }
+
+      .subtitle::after {
+        content: " */";
+      }
+
+      .language-switcher {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .language-btn {
+        background-color: var(--code-bg);
+        border: 1px solid #475569;
+        color: #e2e8f0;
+        padding: 0.5rem 1rem;
+        border-radius: 0.3rem;
+        cursor: pointer;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+      }
+
+      .language-btn::before {
+        content: "$";
+        margin-right: 0.5rem;
+        color: var(--terminal-green);
+      }
+
+      .language-btn:hover,
+      .language-btn.active {
+        background-color: #334155;
+        color: white;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+      }
+
+      .prayer-container {
+        background-color: var(--card-bg);
+        border-radius: 0.5rem;
+        padding: 3rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 3rem;
+        border: 1px solid #475569;
+      }
+
+      .prayer-container::before {
+        content: "/**";
+        position: absolute;
+        top: 1.5rem;
+        left: 1.5rem;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 1rem;
+        color: #64748b;
+      }
+
+      .prayer-container::after {
+        content: "**/";
+        position: absolute;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 1rem;
+        color: #64748b;
+      }
+
+      .prayer {
+        position: relative;
+        z-index: 2;
+        font-family: "Anonymous Pro", monospace;
+        font-size: 1.05rem;
+      }
+
+      .prayer-english,
+      .prayer-french {
+        animation: fadeEffect 0.5s;
+      }
+
+      .prayer-french {
+        display: none;
+      }
+
+      @keyframes fadeEffect {
+        from {
+          opacity: 0;
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        to {
+          opacity: 1;
         }
-        
-        body {
-            background-color: var(--background);
-            color: #e2e8f0;
-            font-family: 'Space Mono', monospace;
-            line-height: 1.7;
-            position: relative;
-            min-height: 100vh;
+      }
+
+      .invocation {
+        font-weight: bold;
+        font-size: 1.3rem;
+        margin-bottom: 2rem;
+        color: var(--terminal-green);
+      }
+
+      .stanza {
+        margin-bottom: 1.8rem;
+        position: relative;
+        padding-left: 1.5rem;
+      }
+
+      .stanza::before {
+        content: ">";
+        position: absolute;
+        left: 0;
+        color: #94a3b8;
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      .line {
+        display: block;
+        margin-bottom: 0.3rem;
+      }
+
+      .line:hover {
+        color: var(--terminal-green);
+      }
+
+      .closing {
+        font-weight: bold;
+        font-style: italic;
+        margin-top: 2rem;
+        font-size: 1.3rem;
+        color: var(--terminal-green);
+      }
+
+      .code-term {
+        font-family: "VT323", monospace;
+        background-color: var(--code-bg);
+        color: var(--code-color);
+        padding: 0.1rem 0.3rem;
+        border-radius: 0.3rem;
+        font-size: 1.1em;
+      }
+
+      .print-button {
+        display: block;
+        margin: 0 auto 3rem;
+        background-color: var(--code-bg);
+        color: white;
+        border: 1px solid #475569;
+        padding: 0.8rem 2rem;
+        border-radius: 0.3rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .print-button::before {
+        content: "$ print";
+        color: var(--terminal-green);
+        margin-right: 0.5rem;
+      }
+
+      .print-button:hover {
+        background-color: #334155;
+        transform: translateY(-2px);
+        box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+      }
+
+      .footer {
+        text-align: center;
+        padding: 2rem 0;
+        color: #94a3b8;
+        font-size: 0.8rem;
+        border-top: 1px solid #475569;
+        margin-top: 2rem;
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      .footer a {
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+        color: var(--terminal-green);
+      }
+
+      .theme-switch {
+        position: fixed;
+        top: 1.5rem;
+        right: 1.5rem;
+        background: var(--code-bg);
+        border-radius: 0.3rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        z-index: 10;
+        border: 1px solid #475569;
+      }
+
+      .theme-switch svg {
+        width: 1.2rem;
+        height: 1.2rem;
+        fill: #e2e8f0;
+      }
+
+      /* Custom blinking cursor effect */
+      .cursor-blink {
+        display: inline-block;
+        width: 0.6rem;
+        height: 1.2rem;
+        background-color: var(--terminal-green);
+        margin-left: 0.5rem;
+        animation: blink 1s infinite;
+        vertical-align: middle;
+      }
+
+      @keyframes blink {
+        0%,
+        49% {
+          opacity: 1;
         }
-        
-        .background-grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: 50px 50px;
-            background-image: 
-                linear-gradient(to right, rgba(99, 102, 241, 0.05) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(99, 102, 241, 0.05) 1px, transparent 1px);
-            z-index: -1;
+        50%,
+        100% {
+          opacity: 0;
         }
-        
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        
-        header {
-            text-align: center;
-            padding: 3rem 1rem;
-            position: relative;
-        }
-        
-        header::before {
-            content: "<header>";
-            position: absolute;
-            top: 10px;
-            left: 0;
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.8rem;
-            color: rgba(148, 163, 184, 0.6);
-        }
-        
-        header::after {
-            content: "</header>";
-            position: absolute;
-            bottom: 10px;
-            left: 0;
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.8rem;
-            color: rgba(148, 163, 184, 0.6);
-        }
-        
-        h1 {
-            font-family: 'Major Mono Display', monospace;
-            font-size: 2.8rem;
-            margin-bottom: 1rem;
-            color: var(--terminal-green);
-            letter-spacing: -2px;
-            text-shadow: 0 0 10px rgba(74, 222, 128, 0.4);
-        }
-        
-        .subtitle {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1rem;
-            color: #94a3b8;
-            margin-bottom: 2rem;
-            font-weight: 300;
-        }
-        
-        .subtitle::before {
-            content: "/* ";
-        }
-        
-        .subtitle::after {
-            content: " */";
-        }
-        
-        .language-switcher {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        
-        .language-btn {
-            background-color: var(--code-bg);
-            border: 1px solid #475569;
-            color: #e2e8f0;
-            padding: 0.5rem 1rem;
-            border-radius: 0.3rem;
-            cursor: pointer;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-        }
-        
-        .language-btn::before {
-            content: "$";
-            margin-right: 0.5rem;
-            color: var(--terminal-green);
-        }
-        
-        .language-btn:hover, .language-btn.active {
-            background-color: #334155;
-            color: white;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
-        }
-        
+      }
+
+      /* Matrix-like effect */
+      .matrix-rain {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+        opacity: 0.08;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
         .prayer-container {
-            background-color: var(--card-bg);
-            border-radius: 0.5rem;
-            padding: 3rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 3rem;
-            border: 1px solid #475569;
+          padding: 2rem;
         }
-        
-        .prayer-container::before {
-            content: "/**";
-            position: absolute;
-            top: 1.5rem;
-            left: 1.5rem;
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 1rem;
-            color: #64748b;
+
+        h1 {
+          font-size: 2rem;
         }
-        
+
+        .prayer-container::before,
         .prayer-container::after {
-            content: "**/";
-            position: absolute;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 1rem;
-            color: #64748b;
+          font-size: 0.8rem;
         }
-        
-        .prayer {
-            position: relative;
-            z-index: 2;
-            font-family: 'Anonymous Pro', monospace;
-            font-size: 1.05rem;
-        }
-        
-        .prayer-english, .prayer-french {
-            animation: fadeEffect 0.5s;
-        }
-        
-        .prayer-french {
-            display: none;
-        }
-        
-        @keyframes fadeEffect {
-            from {opacity: 0;}
-            to {opacity: 1;}
-        }
-        
-        .invocation {
-            font-weight: bold;
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            color: var(--terminal-green);
-        }
-        
+
         .stanza {
-            margin-bottom: 1.8rem;
-            position: relative;
-            padding-left: 1.5rem;
+          padding-left: 1rem;
         }
-        
-        .stanza::before {
-            content: ">";
-            position: absolute;
-            left: 0;
-            color: #94a3b8;
-            font-family: 'JetBrains Mono', monospace;
+      }
+
+      /* Light mode styles */
+      body.light-mode {
+        --background: #f1f5f9;
+        --card-bg: #ffffff;
+        --code-bg: #f1f5f9;
+        --code-color: #0284c7;
+        --text-color: #0f172a;
+        --light-text: #64748b;
+        --terminal-green: #16a34a;
+        color: #0f172a;
+      }
+
+      body.light-mode .background-grid {
+        background-image: linear-gradient(
+            to right,
+            rgba(15, 23, 42, 0.05) 1px,
+            transparent 1px
+          ),
+          linear-gradient(
+            to bottom,
+            rgba(15, 23, 42, 0.05) 1px,
+            transparent 1px
+          );
+      }
+
+      body.light-mode .prayer-container {
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      body.light-mode .language-btn {
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        color: #0f172a;
+      }
+
+      body.light-mode .language-btn:hover,
+      body.light-mode .language-btn.active {
+        background-color: #f1f5f9;
+        border-color: var(--primary-color);
+      }
+
+      body.light-mode .print-button {
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        color: #0f172a;
+      }
+
+      body.light-mode .print-button:hover {
+        background-color: #f1f5f9;
+      }
+
+      body.light-mode .theme-switch {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+      }
+
+      body.light-mode .theme-switch svg {
+        fill: #0f172a;
+      }
+
+      /* Print styles */
+      @media print {
+        .theme-switch,
+        .language-switcher,
+        .print-button,
+        .footer,
+        .matrix-rain,
+        .background-grid {
+          display: none;
         }
-        
-        .line {
-            display: block;
-            margin-bottom: 0.3rem;
+
+        body {
+          background-color: white;
+          color: black;
         }
-        
-        .line:hover {
-            color: var(--terminal-green);
+
+        .container {
+          padding: 0;
         }
-        
+
+        .prayer-container {
+          box-shadow: none;
+          padding: 1rem;
+          border: none;
+        }
+
+        .prayer-container::before,
+        .prayer-container::after,
+        .stanza::before,
+        header::before,
+        header::after {
+          display: none;
+        }
+
+        h1 {
+          color: black;
+          text-shadow: none;
+        }
+
+        .invocation,
         .closing {
-            font-weight: bold;
-            font-style: italic;
-            margin-top: 2rem;
-            font-size: 1.3rem;
-            color: var(--terminal-green);
+          color: black;
         }
-        
+
         .code-term {
-            font-family: 'VT323', monospace;
-            background-color: var(--code-bg);
-            color: var(--code-color);
-            padding: 0.1rem 0.3rem;
-            border-radius: 0.3rem;
-            font-size: 1.1em;
+          background-color: transparent;
+          color: black;
+          font-family: monospace;
         }
-        
-        .print-button {
-            display: block;
-            margin: 0 auto 3rem;
-            background-color: var(--code-bg);
-            color: white;
-            border: 1px solid #475569;
-            padding: 0.8rem 2rem;
-            border-radius: 0.3rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .print-button::before {
-            content: "$ print";
-            color: var(--terminal-green);
-            margin-right: 0.5rem;
-        }
-        
-        .print-button:hover {
-            background-color: #334155;
-            transform: translateY(-2px);
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 2rem 0;
-            color: #94a3b8;
-            font-size: 0.8rem;
-            border-top: 1px solid #475569;
-            margin-top: 2rem;
-            font-family: 'JetBrains Mono', monospace;
-        }
-        
-        .footer a {
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-        
-        .footer a:hover {
-            text-decoration: underline;
-            color: var(--terminal-green);
-        }
-        
-        .theme-switch {
-            position: fixed;
-            top: 1.5rem;
-            right: 1.5rem;
-            background: var(--code-bg);
-            border-radius: 0.3rem;
-            width: 2.5rem;
-            height: 2.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            z-index: 10;
-            border: 1px solid #475569;
-        }
-        
-        .theme-switch svg {
-            width: 1.2rem;
-            height: 1.2rem;
-            fill: #e2e8f0;
-        }
-        
-        /* Custom blinking cursor effect */
-        .cursor-blink {
-            display: inline-block;
-            width: 0.6rem;
-            height: 1.2rem;
-            background-color: var(--terminal-green);
-            margin-left: 0.5rem;
-            animation: blink 1s infinite;
-            vertical-align: middle;
-        }
-        
-        @keyframes blink {
-            0%, 49% { opacity: 1; }
-            50%, 100% { opacity: 0; }
-        }
-        
-        /* Matrix-like effect */
-        .matrix-rain {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0.08;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .prayer-container {
-                padding: 2rem;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .prayer-container::before,
-            .prayer-container::after {
-                font-size: 0.8rem;
-            }
-            
-            .stanza {
-                padding-left: 1rem;
-            }
-        }
-        
-        /* Light mode styles */
-        body.light-mode {
-            --background: #f1f5f9;
-            --card-bg: #ffffff;
-            --code-bg: #f1f5f9;
-            --code-color: #0284c7;
-            --text-color: #0f172a;
-            --light-text: #64748b;
-            --terminal-green: #16a34a;
-            color: #0f172a;
-        }
-        
-        body.light-mode .background-grid {
-            background-image: 
-                linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
-        }
-        
-        body.light-mode .prayer-container {
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        body.light-mode .language-btn {
-            background-color: #f8fafc;
-            border: 1px solid #e2e8f0;
-            color: #0f172a;
-        }
-        
-        body.light-mode .language-btn:hover, 
-        body.light-mode .language-btn.active {
-            background-color: #f1f5f9;
-            border-color: var(--primary-color);
-        }
-        
-        body.light-mode .print-button {
-            background-color: #f8fafc;
-            border: 1px solid #e2e8f0;
-            color: #0f172a;
-        }
-        
-        body.light-mode .print-button:hover {
-            background-color: #f1f5f9;
-        }
-        
-        body.light-mode .theme-switch {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-        }
-        
-        body.light-mode .theme-switch svg {
-            fill: #0f172a;
-        }
-        
-        /* Print styles */
-        @media print {
-            .theme-switch, .language-switcher, .print-button, .footer, .matrix-rain, .background-grid {
-                display: none;
-            }
-            
-            body {
-                background-color: white;
-                color: black;
-            }
-            
-            .container {
-                padding: 0;
-            }
-            
-            .prayer-container {
-                box-shadow: none;
-                padding: 1rem;
-                border: none;
-            }
-            
-            .prayer-container::before,
-            .prayer-container::after,
-            .stanza::before,
-            header::before,
-            header::after {
-                display: none;
-            }
-            
-            h1 {
-                color: black;
-                text-shadow: none;
-            }
-            
-            .invocation, .closing {
-                color: black;
-            }
-            
-            .code-term {
-                background-color: transparent;
-                color: black;
-                font-family: monospace;
-            }
-        }
+      }
     </style>
-</head>
-<body class="dark-mode">
+  </head>
+  <body class="dark-mode">
     <div class="background-grid"></div>
     <canvas id="matrix-rain" class="matrix-rain"></canvas>
-    
+
     <div class="theme-switch" onclick="toggleTheme()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.844a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" />
-        </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path
+          d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.844a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"
+        />
+      </svg>
     </div>
-    
+
     <div class="container">
-        <header>
-            <h1>the progrAmmer's prAyer</h1>
-            <p class="subtitle">a sacred incantation for those who commune with machines</p>
-            
-            <div class="language-switcher">
-                <button class="language-btn active" onclick="switchLanguage('english')">select_english</button>
-                <button class="language-btn" onclick="switchLanguage('french')">select_french</button>
-            </div>
-        </header>
-        
-        <div class="prayer-container">
-            <div class="prayer prayer-english">
-                <div class="invocation">Lord,<span class="cursor-blink"></span></div>
-                
-                <div class="stanza">
-                    <div class="line">Deliver us from segfaults,</div>
-                    <div class="line">Those cracks in the binary soul,</div>
-                    <div class="line">Where logic goes to die.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Protect us from race conditions,</div>
-                    <div class="line">Masterless threads with no rest,</div>
-                    <div class="line">Errors that bloom only in prod.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Forgive our force pushes,</div>
-                    <div class="line">Those sacred panic rituals,</div>
-                    <div class="line">When ego outruns the tests.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Lead us not into merge conflicts,</div>
-                    <div class="line">Ancient branch wars reborn,</div>
-                    <div class="line">Where even the past refuses to merge.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Free us from spaghetti code,</div>
-                    <div class="line">Written at midnight on cold coffee,</div>
-                    <div class="line">Maintained by superstition alone.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Bless open source code,</div>
-                    <div class="line">Clear READMEs and kind PRs,</div>
-                    <div class="line">And those who document unasked.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Grant us green pipelines,</div>
-                    <div class="line">Fast, stable builds,</div>
-                    <div class="line">And dashboards as empty as our group chats.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Shield us from vibe coding,</div>
-                    <div class="line">That curse upon our souls,</div>
-                    <div class="line">Where code becomes performance art.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Keep away the absurd deadlines,</div>
-                    <div class="line">The hastily written tickets,</div>
-                    <div class="line">And roadmaps drawn on napkins.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Spare us from project managers and scrum masters,</div>
-                    <div class="line">With their prophetic spreadsheets,</div>
-                    <div class="line">And sprint plans void of user stories.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Protect us from endless meetings,</div>
-                    <div class="line">Senseless post-its,</div>
-                    <div class="line">And PowerPoints without commits.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Bless our sustainable architectures,</div>
-                    <div class="line">Crafted with clarity and patience,</div>
-                    <div class="line">Built not to impress, but to endure.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Lord, keep us safe from Java,</div>
-                    <div class="line">That language where the obvious</div>
-                    <div class="line">Takes three classes and twelve interfaces.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Grant us peers who review with humility,</div>
-                    <div class="line">Reproducible bugs,</div>
-                    <div class="line">And specs written by actual humans.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Help us stay calm in chaos,</div>
-                    <div class="line">When everything works except what matters,</div>
-                    <div class="line">And no one knows why.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">And if truly all is lost,</div>
-                    <div class="line">Give us a fresh cup of coffee,</div>
-                    <div class="line">And a story good enough to survive the stand-up.</div>
-                </div>
-                
-                <div class="closing">Amen.</div>
-            </div>
-            
-            <div class="prayer prayer-french">
-                <div class="invocation">Seigneur,<span class="cursor-blink"></span></div>
-                
-                <div class="stanza">
-                    <div class="line">Délivre-nous des segfaults,</div>
-                    <div class="line">Ces failles de l'âme binaire,</div>
-                    <div class="line">Où la logique perd son chemin.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Protège-nous des race conditions,</div>
-                    <div class="line">Des threads sans maître ni repos,</div>
-                    <div class="line">Des erreurs qui n'arrivent qu'en prod.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Pardonne nos force push,</div>
-                    <div class="line">Ces gestes de panique sacrée,</div>
-                    <div class="line">Quand l'ego devance le test.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Ne nous soumets pas aux merge conflicts,</div>
-                    <div class="line">Ces guerres de branches anciennes,</div>
-                    <div class="line">Où même le passé refuse de merger.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Libère-nous du code spaghetti,</div>
-                    <div class="line">Écrit à minuit sur fond de café froid,</div>
-                    <div class="line">Et maintenu par superstition.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Bénis le code open source,</div>
-                    <div class="line">Les README clairs et les PR bienveillantes,</div>
-                    <div class="line">Et ceux qui documentent sans qu'on leur demande.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Donne-nous des pipelines verts,</div>
-                    <div class="line">Des builds rapides, et stables,</div>
-                    <div class="line">Et des dashboards aussi vides que nos groupes d'amis.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Préserve-nous du vibe coding,</div>
-                    <div class="line">Cette malédiction qui ronge nos âmes,</div>
-                    <div class="line">Et transforme le code en mise en scène.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Éloigne de nous les deadlines absurdes,</div>
-                    <div class="line">Les tickets écrits à la va-vite,</div>
-                    <div class="line">Et les roadmaps dessinées sur des serviettes.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Épargne-nous les chefs de projet et scrum master,</div>
-                    <div class="line">Leurs tableurs prophétiques,</div>
-                    <div class="line">Et leurs sprints sans user stories.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Protège-nous des réunions infinies,</div>
-                    <div class="line">Des post-its sans sens,</div>
-                    <div class="line">Et des PowerPoints sans commits.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Bénis nos architectures durables,</div>
-                    <div class="line">Pensées avec clarté et patience,</div>
-                    <div class="line">Construites non pour briller, mais pour tenir.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Seigneur préserve-nous du Java,</div>
-                    <div class="line">Ce langage où l'on déclare l'évidence,</div>
-                    <div class="line">En trois classes et douze interfaces.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Offre-nous des collègues qui review avec humilité,</div>
-                    <div class="line">Des bugs reproductibles,</div>
-                    <div class="line">Et des specs écrites par des humains.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Seigneur, laisse les logs parler,</div>
-                    <div class="line">Quand tout marche sauf ce qui compte,</div>
-                    <div class="line">Et que <span class="code-term">tail -f</span> devient notre dernier refuge.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Et si tout s'effondre,</div>
-                    <div class="line">Donne-nous un <span class="code-term">exit 0</span> en guise de sortie,</div>
-                    <div class="line">Ou au moins une stacktrace en paix.</div>
-                </div>
-                
-                <div class="stanza">
-                    <div class="line">Et si vraiment tout est foutu,</div>
-                    <div class="line">Donne-nous un café chaud,</div>
-                    <div class="line">Et une excuse crédible pour le stand-up.</div>
-                </div>
-                
-                <div class="closing">Amen.</div>
-            </div>
+      <header>
+        <h1>the progrAmmer's prAyer</h1>
+        <p class="subtitle">
+          a sacred incantation for those who commune with machines
+        </p>
+
+        <div class="language-switcher">
+          <button
+            class="language-btn active"
+            onclick="switchLanguage('english')"
+          >
+            English
+          </button>
+          <button class="language-btn" onclick="switchLanguage('french')">
+            Francais
+          </button>
         </div>
-        
-        <button class="print-button" onclick="window.print()">prayer.txt</button>
-        
-        <div class="footer">
-            <p>The Programmer's Prayer © 2025 • Version 1.0.0 • Commit: a7f8c2d</p>
-            <p><a href="#">GitHub</a> • <a href="#">npm install programmers-prayer</a> • <a href="#">Report Bug</a></p>
+      </header>
+
+      <div class="prayer-container">
+        <div class="prayer prayer-english">
+          <div class="invocation">Lord,<span class="cursor-blink"></span></div>
+
+          <div class="stanza">
+            <div class="line">Deliver us from segfaults,</div>
+            <div class="line">Those cracks in the binary soul,</div>
+            <div class="line">Where logic goes to die.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Protect us from race conditions,</div>
+            <div class="line">Masterless threads with no rest,</div>
+            <div class="line">Errors that bloom only in prod.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Forgive our force pushes,</div>
+            <div class="line">Those sacred panic rituals,</div>
+            <div class="line">When ego outruns the tests.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Lead us not into merge conflicts,</div>
+            <div class="line">Ancient branch wars reborn,</div>
+            <div class="line">Where even the past refuses to merge.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Free us from spaghetti code,</div>
+            <div class="line">Written at midnight on cold coffee,</div>
+            <div class="line">Maintained by superstition alone.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Bless open source code,</div>
+            <div class="line">Clear READMEs and kind PRs,</div>
+            <div class="line">And those who document unasked.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Grant us green pipelines,</div>
+            <div class="line">Fast, stable builds,</div>
+            <div class="line">And dashboards as empty as our group chats.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Shield us from vibe coding,</div>
+            <div class="line">That curse upon our souls,</div>
+            <div class="line">Where code becomes performance art.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Keep away the absurd deadlines,</div>
+            <div class="line">The hastily written tickets,</div>
+            <div class="line">And roadmaps drawn on napkins.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">
+              Spare us from project managers and scrum masters,
+            </div>
+            <div class="line">With their prophetic spreadsheets,</div>
+            <div class="line">And sprint plans void of user stories.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Protect us from endless meetings,</div>
+            <div class="line">Senseless post-its,</div>
+            <div class="line">And PowerPoints without commits.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Bless our sustainable architectures,</div>
+            <div class="line">Crafted with clarity and patience,</div>
+            <div class="line">Built not to impress, but to endure.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Lord, keep us safe from Java,</div>
+            <div class="line">That language where the obvious</div>
+            <div class="line">Takes three classes and twelve interfaces.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Grant us peers who review with humility,</div>
+            <div class="line">Reproducible bugs,</div>
+            <div class="line">And specs written by actual humans.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Help us stay calm in chaos,</div>
+            <div class="line">When everything works except what matters,</div>
+            <div class="line">And no one knows why.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">And if truly all is lost,</div>
+            <div class="line">Give us a fresh cup of coffee,</div>
+            <div class="line">
+              And a story good enough to survive the stand-up.
+            </div>
+          </div>
+
+          <div class="closing">Amen.</div>
         </div>
+
+        <div class="prayer prayer-french">
+          <div class="invocation">
+            Seigneur,<span class="cursor-blink"></span>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Délivre-nous des segfaults,</div>
+            <div class="line">Ces failles de l'âme binaire,</div>
+            <div class="line">Où la logique perd son chemin.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Protège-nous des race conditions,</div>
+            <div class="line">Des threads sans maître ni repos,</div>
+            <div class="line">Des erreurs qui n'arrivent qu'en prod.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Pardonne nos force push,</div>
+            <div class="line">Ces gestes de panique sacrée,</div>
+            <div class="line">Quand l'ego devance le test.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Ne nous soumets pas aux merge conflicts,</div>
+            <div class="line">Ces guerres de branches anciennes,</div>
+            <div class="line">Où même le passé refuse de merger.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Libère-nous du code spaghetti,</div>
+            <div class="line">Écrit à minuit sur fond de café froid,</div>
+            <div class="line">Et maintenu par superstition.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Bénis le code open source,</div>
+            <div class="line">Les README clairs et les PR bienveillantes,</div>
+            <div class="line">
+              Et ceux qui documentent sans qu'on leur demande.
+            </div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Donne-nous des pipelines verts,</div>
+            <div class="line">Des builds rapides, et stables,</div>
+            <div class="line">
+              Et des dashboards aussi vides que nos groupes d'amis.
+            </div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Préserve-nous du vibe coding,</div>
+            <div class="line">Cette malédiction qui ronge nos âmes,</div>
+            <div class="line">Et transforme le code en mise en scène.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Éloigne de nous les deadlines absurdes,</div>
+            <div class="line">Les tickets écrits à la va-vite,</div>
+            <div class="line">
+              Et les roadmaps dessinées sur des serviettes.
+            </div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">
+              Épargne-nous les chefs de projet et scrum master,
+            </div>
+            <div class="line">Leurs tableurs prophétiques,</div>
+            <div class="line">Et leurs sprints sans user stories.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Protège-nous des réunions infinies,</div>
+            <div class="line">Des post-its sans sens,</div>
+            <div class="line">Et des PowerPoints sans commits.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Bénis nos architectures durables,</div>
+            <div class="line">Pensées avec clarté et patience,</div>
+            <div class="line">
+              Construites non pour briller, mais pour tenir.
+            </div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Seigneur préserve-nous du Java,</div>
+            <div class="line">Ce langage où l'on déclare l'évidence,</div>
+            <div class="line">En trois classes et douze interfaces.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">
+              Offre-nous des collègues qui review avec humilité,
+            </div>
+            <div class="line">Des bugs reproductibles,</div>
+            <div class="line">Et des specs écrites par des humains.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Seigneur, laisse les logs parler,</div>
+            <div class="line">Quand tout marche sauf ce qui compte,</div>
+            <div class="line">
+              Et que <span class="code-term">tail -f</span> devient notre
+              dernier refuge.
+            </div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Et si tout s'effondre,</div>
+            <div class="line">
+              Donne-nous un <span class="code-term">exit 0</span> en guise de
+              sortie,
+            </div>
+            <div class="line">Ou au moins une stacktrace en paix.</div>
+          </div>
+
+          <div class="stanza">
+            <div class="line">Et si vraiment tout est foutu,</div>
+            <div class="line">Donne-nous un café chaud,</div>
+            <div class="line">Et une excuse crédible pour le stand-up.</div>
+          </div>
+
+          <div class="closing">Amen.</div>
+        </div>
+      </div>
+
+      <button class="print-button" onclick="window.print()">prayer.txt</button>
+
+      <div class="footer">
+        <p>The Programmer's Prayer © 2025 • Version 1.0.0 • Commit: a7f8c2d</p>
+        <p>
+          <a href="#">GitHub</a> •
+          <a href="#">npm install programmers-prayer</a> •
+          <a href="#">Report Bug</a>
+        </p>
+      </div>
     </div>
-    
+
     <script>
-        // Fixed JavaScript function for switching languages
-        function switchLanguage(lang) {
-            const englishPrayer = document.querySelector('.prayer-english');
-            const frenchPrayer = document.querySelector('.prayer-french');
-            const buttons = document.querySelectorAll('.language-btn');
-            
-            buttons.forEach(button => button.classList.remove('active'));
-            
-            if (lang === 'english') {
-                englishPrayer.style.display = 'block';
-                frenchPrayer.style.display = 'none';
-                buttons[0].classList.add('active');
-            } else {
-                englishPrayer.style.display = 'none';
-                frenchPrayer.style.display = 'block';
-                buttons[1].classList.add('active');
-            }
+      // Fixed JavaScript function for switching languages
+      function switchLanguage(lang) {
+        const englishPrayer = document.querySelector(".prayer-english");
+        const frenchPrayer = document.querySelector(".prayer-french");
+        const buttons = document.querySelectorAll(".language-btn");
+
+        buttons.forEach((button) => button.classList.remove("active"));
+
+        if (lang === "english") {
+          englishPrayer.style.display = "block";
+          frenchPrayer.style.display = "none";
+          buttons[0].classList.add("active");
+        } else {
+          englishPrayer.style.display = "none";
+          frenchPrayer.style.display = "block";
+          buttons[1].classList.add("active");
         }
-        
-        function toggleTheme() {
-            document.body.classList.toggle('light-mode');
-        }
+      }
+
+      function toggleTheme() {
+        document.body.classList.toggle("light-mode");
+      }
     </script>
-</body>
+  </body>
 </html>
